@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: refactoring-quiz
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: refactoring-quiz-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+databases:
+  - name: refactoring-quiz-db
+    databaseName: refactoring_quiz
+    user: refactoring_quiz_user
